@@ -4,14 +4,19 @@ const fs = require('fs');
 const app = express();
 const port = 3000;
 
-// db.TXT
-let rawData = fs.readFileSync('db.txt', 'utf8');
-let lines = rawData.split('\n');
+fs.readFile('db.txt', 'utf8', (err, data) => {
+  if (err) {
+    console.error('Error reading the file:', err);
+    return;
+  }
+  
+  const lines = data.split('\n');
 
-app.get('/data', (req, res) => {
-  res.send({ data: lines });
-});
+  app.get('/data', (req, res) => {
+    res.send({ data: lines });
+  });
 
-app.listen(port, () => {
-  console.log(`Server running on http://localhost:${port}`);
+  app.listen(port, () => {
+    console.log(`Server running on http://localhost:${port}`);
+  });
 });
