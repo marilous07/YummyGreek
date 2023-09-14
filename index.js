@@ -1,5 +1,6 @@
 const express = require('express');
 const fs = require('fs');
+const { filterByDietary, filterByPrice, filterByAllergens } = require('./filters');
 
 const app = express();
 const port = 3001;
@@ -7,17 +8,36 @@ const port = 3001;
 // Middleware for JSON parsing
 app.use(express.json());
 
-fs.readFile('db.txt', 'utf8', (err, data) => {
-  if (err) {
-    console.error('Error reading the file:', err);
-    return;
-  }
+let dishes;
 
-  const lines = data.split('\n');
-//GET
-app.get('/', (req, res) => {
-    res.send('OKS');
-  });
+// Read database once when the application starts
+fs.readFile('db.txt', 'utf8', (err, data) => {
+    if (err) {
+        console.error('Error reading the file:', err);
+        return;
+    }
+
+    dishes = JSON.parse(data);
+});
+
+app.get('/dishes', (req, res) => {
+    let filteredDishes = dishes;
+
+    if (req.query.dietary) {
+        filteredDishes = filterByDietary(filteredDishes, req.query.dietary);
+    }
+
+    if (req.query.price) {
+        const [minPrice, maxPrice] = req.query.price.split('-').map(Number);
+        filteredDishes = filterByPrice(filteredDishes, minPrice, maxPrice);
+    }
+
+    if (req.query.allergens) {
+        filteredDishes = filterByAllergens(filteredDishes, req.query.allergens);
+    }
+
+    res.send({ dishes: filteredDishes });
+});
  
 
 //POST
@@ -59,4 +79,3 @@ app.delete('/data/:id', (req, res) => {
   });
 
   
-});
