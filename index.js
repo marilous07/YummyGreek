@@ -1,15 +1,17 @@
 const express = require('express');
-const apiRoutes = require('./routes/api');
+const fs = require('fs');
 
 const app = express();
 const port = 3000;
 
-app.use('/api', apiRoutes);
+// db.TXT
+let rawData = fs.readFileSync('db.txt', 'utf8');
+let lines = rawData.split('\n');
 
-app.get('/', (req, res) => {
-  res.send('Hello World!');
+app.get('/data', (req, res) => {
+  res.send({ data: lines });
 });
 
 app.listen(port, () => {
-  console.log(`Server running at http://localhost:${port}/`);
+  console.log(`Server running on http://localhost:${port}`);
 });
