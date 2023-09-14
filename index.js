@@ -5,6 +5,7 @@ const { filterByDietary, filterByPrice, filterByAllergens } = require('./filters
 const app = express();
 const port = 3001;
 
+
 // Middleware for JSON parsing
 app.use(express.json());
 
@@ -79,3 +80,4 @@ app.delete('/data/:id', (req, res) => {
   });
 
   
+  module.exports = app;

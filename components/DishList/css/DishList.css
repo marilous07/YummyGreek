@@ -1,0 +1,22 @@
+.dish-list {
+    font-family: Arial, sans-serif;
+    border: 1px solid #ddd;
+    padding: 16px;
+    margin: 16px;
+    border-radius: 8px;
+    box-shadow: 0px 0px 10px #ccc;
+}
+
+.dish-list h2 {
+    margin-top: 0;
+    margin-bottom: 16px;
+}
+
+.dish-list ul {
+    list-style: none;
+    padding: 0;
+}
+
+.dish-list li {
+    margin-bottom: 8px;
+}
